@@ -1,116 +1,81 @@
-# **Project Description**
-## **Overview**:  
-This project explores how various car features impact pricing and profitability. It aims to help car manufacturers optimize their pricing strategies and product development by identifying features that drive consumer demand and profitability.
+# Impact of Car Features on Price
 
-## **Business Problem**:  
-How can a car manufacturer optimize pricing and product development decisions to maximize profitability while meeting consumer demand?
+An Excel analytics project that measures how engine power, cylinders, fuel efficiency, body style, market category and brand affect a car's MSRP.
+It helps a manufacturer decide which features justify a price premium and which segments are worth developing.
+Data covers 11,914 US car listings from model years 1990–2017.
 
-## **Data Sources**:  
-The dataset, titled "Dataset" contains 11,915 observations and 16 variables, including details on car make, model, year, fuel type, engine specifications, and MSRP. The data was sourced from Kaggle and represents trends up to 2017.
+## Project Files
 
-## **Data Cleaning and Preprocessing**:  
-- Missing values were identified and handled appropriately.
-- Cleaned text and removed extra spaces.
-- Duplicated values were identified and removed.
-- Blank rows were identified and removed.
-- Columns like Year, which were stored as strings, were converted to integers for chronological analysis.
-- Converted MSRP and Engine HP from strings to numerical data types (e.g., float) for calculations.
-- Adjusted Number of Doors from float to integer for logical consistency.
+| File | Description |
+|---|---|
+| `Dataset.xlsx` | Raw data (sheet `Car_data`): 11,914 rows × 16 columns. |
+| `Impact_of_Car_Features_on_Price_Analysis.xlsx` | Full workbook (9 sheets): raw and cleaned data, Task 1–5, make/body-style pivots, charts, slicers. |
+| `README.md` | Project documentation. |
 
----
+## Dataset
 
-# **Approach**
-**Analytical Methods**:  
-- Descriptive statistics to summarize data trends.
-- Regression analysis to model the relationship between features and MSRP.
-- Visualizations, including scatter plots, combo charts, and bar charts, to explore patterns.
+| Column | Description |
+|---|---|
+| `Make`, `Model`, `Year` | Manufacturer, model name, model year (1990–2017). |
+| `Engine Fuel Type` | Fuel type (regular, premium, diesel, flex-fuel, electric…). |
+| `Engine HP`, `Engine Cylinders` | Horsepower and cylinder count. |
+| `Transmission Type`, `Driven_Wheels` | Transmission and drive layout. |
+| `Number of Doors` | 2, 3 or 4. |
+| `Market Category` | Comma-separated tags (Luxury, Crossover, Hybrid…). |
+| `Vehicle Size`, `Vehicle Style` | Compact/Midsize/Large; body style. |
+| `highway MPG`, `city mpg` | Fuel efficiency. |
+| `Popularity` | Popularity score. |
+| `MSRP` | List price in USD (target variable). |
 
-## **Reasoning Behind Methods**:  
-- Regression analysis identifies significant predictors of price, helping prioritize feature development.
-- Visualizations simplify the communication of complex relationships for stakeholders.
+The `Cleaned data` sheet splits `Market Category` into two columns and adds `AVG MPG` = (highway + city) / 2.
 
-## **Modeling Techniques**:  
-- Multiple linear regression for price prediction.
-- Correlation analysis to study relationships between variables like fuel efficiency and engine cylinders.
+## Approach
 
----
+1. **Understand the data:** profile 16 columns, types, nulls and duplicates.
+2. **Clean:** remove 715 duplicates and 102 rows missing HP, cylinders, doors or fuel type (11,914 → 11,097); fix data types; trim text; split `Market Category`.
+3. **Analyse:** five tasks using pivots, scatter plots with trendlines, a 7-variable regression and `CORREL`.
+4. **Report:** charts, slicers and written takeaways inside each task sheet.
 
-### **Tech-Stack Used**
-**Tools and Software**:  
-- **Excel**: Pivot tables, Regression Analysis, Power Query Editor, Charts, Slicers, VLOOKUP and HLOOKUP
+## Key Insights
 
-**Reasoning**:  
-- Excel was chosen for its ease of use in business contexts.
+All figures were recomputed from the cleaned data (n = 11,097).
 
----
+| Question | Finding |
+|---|---|
+| Power vs price | MSRP ≈ 369 × HP − 51,716. R² = 0.43, r = 0.66. About +$369 per HP. |
+| Price drivers | Regression R² = 0.467. All variables significant (p < 0.001) except `Year` (p = 0.83). |
+| Strongest driver | Engine HP (standardised β = 0.57), then cylinders (0.22), city mpg (0.13). |
+| Cylinders vs MPG | r = −0.61. Avg highway MPG: 4 cyl 31.5, 6 cyl 24.0, 8 cyl 20.2, 12 cyl 17.7. |
+| Brand pricing | Overall mean $41,901, median $30,600. Bugatti $1.76M, Rolls-Royce $351k, Porsche $102k, Toyota $29k. |
+| Popularity | Highest: Hybrid 2,117, Flex Fuel 2,111, Diesel 1,977. Lowest: Exotic 893 (avg MSRP $240k). Overall 1,557. |
+| Largest segments | Crossover (1,986) and Luxury (1,879) are the biggest tagged categories; 3,362 rows are untagged. |
+| Body style | Sedan 24%, 4Dr SUV 21%, Coupe 19%, Convertible 14% of total listed MSRP. |
+| Drive type | Avg MSRP: AWD $58.8k, RWD $57.2k, FWD $23.2k. |
 
-# **Insights**
-1. **Market Category Popularity**:  
-   - Luxury and performance categories show high average prices but varied popularity.
-   - Crossovers dominate in terms of model count and consumer interest.
+## Data Notes
 
-2. **Feature Importance for Pricing**:  
-   - Engine HP and market category significantly influence MSRP.
-   - Vehicle style and size also contribute but with less weight.
+| Issue | Detail |
+|---|---|
+| Placeholder prices | 748 rows (6.7%) have MSRP = $2,000 exactly, all from 1990–2000. This drags down Plymouth ($3.3k; ~$8.1k without them) and most "min MSRP by body style" entries. |
+| Regression robustness | Excluding those rows, R² = 0.456 and coefficients are similar. Excluding 11 cars above $500k, R² rises to 0.58. |
+| Report vs data: top driver | The workbook names Engine Cylinders the top driver. That is true per unit ($7,614) but not after standardising, where HP leads. |
+| Multicollinearity | MPG coefficients are positive although raw correlation with price is negative (city↔highway r = 0.84; cylinders↔HP r = 0.79). |
+| Popularity | It is one value per make (47 of 47 makes). Category popularity reflects brand mix, not features. |
+| Market category | Task 1 counts the first tag only. A "Luxury, High-Performance" car counts as Luxury. |
+| Old README mismatches | Said 11,915 observations (actual 11,914 + header). Implied imputation (rows were dropped). Said Crossover leads in "consumer interest" (avg popularity 1,485 is below the 1,557 mean). Said market category and style were modelled (they were not in the regression). |
+| Excel cell error | `Min and Max MSRP by body style`: Extended Cab Pickup min shows $27,896. Pivot value for Mazda is $11,601. |
+| Missing EVs | All 18 Tesla rows were dropped (no HP value). 53 of 66 electric rows lack HP or cylinders. |
+| Sample skew | 2015–2017 hold 51% of cleaned rows. MSRP is nominal, not inflation-adjusted. |
 
-3. **Fuel Efficiency and Engine Cylinders**:  
-   - Cars with fewer cylinders generally exhibit higher fuel efficiency.
+## Tech Stack
 
-## **Recommendations**:  
-- Focus on optimizing features in the luxury and crossover segments.
-- Develop pricing strategies that reflect consumer interest in performance and sustainability.
+- **Microsoft Excel:** Pivot Tables, Slicers, Power Query, Analysis ToolPak regression, charts.
+- **Formulas:** `HLOOKUP`, `INDEX`, `MATCH`, `MAX`, `MIN`, `CORREL`.
+- **Techniques:** descriptive statistics, linear regression, correlation analysis.
 
----
+## How to Use
 
-# **Results**
-**Visualizations and Tables**:  
-- **Combo Chart**: Relationship between market category popularity and model count.
-
-  ![image](https://github.com/user-attachments/assets/8d584c12-f1b7-43c7-aa41-e4b6c13bdb86)    
-
-
-- **Scatter Plot**: Engine HP vs. MSRP with a trendline.
-
-  ![image](https://github.com/user-attachments/assets/57bcb4d5-c6c5-4fd5-a756-66abbc7e2803)    
-
-
-- **Bar Chart**: Feature importance in predicting MSRP.
-
-  ![image](https://github.com/user-attachments/assets/a2ca30c3-ef07-44e0-8e87-2cea3b87b484)
-
-  ![image](https://github.com/user-attachments/assets/91bd8e80-15a2-4b80-856e-caf028dcd886)
-
-
-- **Horizontal Stacked Bar Chart**: Relationship between manufacturer and average price.
-
-  ![image](https://github.com/user-attachments/assets/e6e19e14-167d-45e8-b2f3-9dd32efb5ff6)
-
-
-
-- **Scatter Plot**: No. of Cylinders vs highway MPG with regression line.
-
-  ![image](https://github.com/user-attachments/assets/78f97a0d-3f86-4a7e-879e-8c278bf7dd71)
-
-  ![image](https://github.com/user-attachments/assets/62620d31-4725-4486-b82d-ec0d717fba32)
-
-
-- **Stacked Column Chart**: Distribution of Car Prices by Brand and Body Style
-
-  ![image](https://github.com/user-attachments/assets/91137960-d27d-430b-bb65-c7f8fe016e61)
-
-
-- **Table**: Min and Max MSRP by body style.
-
-  ![image](https://github.com/user-attachments/assets/007002ea-79ce-43da-a43c-4cb2c5f363fd)
-
-
-## **Discussion**:  
-- The analysis highlights actionable insights for car manufacturers to refine their strategies.
-- Limitations include the dataset's age and potential bias in imputation methods.
-
-## **Future Directions**:  
-- Incorporate recent data to capture emerging trends like EVs and autonomous vehicles.
-- Extend analysis to include consumer demographics for targeted marketing.
-
-# 📩 Feedback
-If you have any feedback, please reach out to me at Linkedin: https://www.linkedin.com/in/vineet-patel416/
+1. Open `Impact_of_Car_Features_on_Price_Analysis.xlsx` in desktop Excel 2016 or later.
+2. Read `Task 1`–`Task 5`. Each sheet has the question, output and takeaway.
+3. Use the slicers in `Min and Max MSRP by body style` to filter by body style.
+4. To redo the regression, enable Analysis ToolPak and run *Data → Data Analysis → Regression* on `Cleaned data` (Y = `MSRP`).
