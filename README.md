@@ -52,21 +52,6 @@ All figures were recomputed from the cleaned data (n = 11,097).
 | Body style | Sedan 24%, 4Dr SUV 21%, Coupe 19%, Convertible 14% of total listed MSRP. |
 | Drive type | Avg MSRP: AWD $58.8k, RWD $57.2k, FWD $23.2k. |
 
-## Data Notes
-
-| Issue | Detail |
-|---|---|
-| Placeholder prices | 748 rows (6.7%) have MSRP = $2,000 exactly, all from 1990–2000. This drags down Plymouth ($3.3k; ~$8.1k without them) and most "min MSRP by body style" entries. |
-| Regression robustness | Excluding those rows, R² = 0.456 and coefficients are similar. Excluding 11 cars above $500k, R² rises to 0.58. |
-| Report vs data: top driver | The workbook names Engine Cylinders the top driver. That is true per unit ($7,614) but not after standardising, where HP leads. |
-| Multicollinearity | MPG coefficients are positive although raw correlation with price is negative (city↔highway r = 0.84; cylinders↔HP r = 0.79). |
-| Popularity | It is one value per make (47 of 47 makes). Category popularity reflects brand mix, not features. |
-| Market category | Task 1 counts the first tag only. A "Luxury, High-Performance" car counts as Luxury. |
-| Old README mismatches | Said 11,915 observations (actual 11,914 + header). Implied imputation (rows were dropped). Said Crossover leads in "consumer interest" (avg popularity 1,485 is below the 1,557 mean). Said market category and style were modelled (they were not in the regression). |
-| Excel cell error | `Min and Max MSRP by body style`: Extended Cab Pickup min shows $27,896. Pivot value for Mazda is $11,601. |
-| Missing EVs | All 18 Tesla rows were dropped (no HP value). 53 of 66 electric rows lack HP or cylinders. |
-| Sample skew | 2015–2017 hold 51% of cleaned rows. MSRP is nominal, not inflation-adjusted. |
-
 ## Tech Stack
 
 - **Microsoft Excel:** Pivot Tables, Slicers, Power Query, Analysis ToolPak regression, charts.
