@@ -6,7 +6,7 @@ Data covers 11,914 US car listings from model years 1990–2017.
 
 ## Project Files
 
-| File | Description |
+| File | Description | 
 |---|---|
 | `Dataset.xlsx` | Raw data (sheet `Car_data`): 11,914 rows × 16 columns. |
 | `Impact_of_Car_Features_on_Price_Analysis.xlsx` | Full workbook (9 sheets): raw and cleaned data, Task 1–5, make/body-style pivots, charts, slicers. |
